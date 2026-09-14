@@ -1,0 +1,24 @@
+{
+  "name": "Dealit — mutual debt tracker",
+  "short_name": "Dealit",
+  "description": "A shared ledger for money lent and borrowed between friends and family. Both agree. Both see the record.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f9d58",
+  "icons": [
+    {
+      "src": "/images/dealit-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/dealit-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

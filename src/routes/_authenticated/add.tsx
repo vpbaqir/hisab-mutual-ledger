@@ -39,9 +39,18 @@ function AddPage() {
 
   async function submit() {
     const value = Number(amount);
-    if (name.trim().length < 2) return toast.error("Add the other person's name");
-    if (!isValidPhone(phone)) return toast.error("Add a valid 10-digit phone number");
-    if (!Number.isFinite(value) || value <= 0) return toast.error("Enter an amount");
+    if (name.trim().length < 2) {
+      toast.error("Add the other person's name");
+      return;
+    }
+    if (!isValidPhone(phone)) {
+      toast.error("Add a valid 10-digit phone number");
+      return;
+    }
+    if (!Number.isFinite(value) || value <= 0) {
+      toast.error("Enter an amount");
+      return;
+    }
 
     try {
       const created = await createTransaction.mutateAsync({

@@ -36,6 +36,7 @@ function AddPage() {
   const [amount, setAmount] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [note, setNote] = useState("");
+  const [invite, setInvite] = useState<{ name: string; amount: number; link: string } | null>(null);
 
   async function submit() {
     const value = Number(amount);

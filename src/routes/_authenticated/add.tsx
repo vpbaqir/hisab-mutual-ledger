@@ -151,8 +151,49 @@ function AddPage() {
         {createTransaction.isPending ? "Sending…" : "Send for Confirmation"}
       </Button>
       <p className="mt-3 text-center text-xs text-muted-foreground">
-        A secure link is shared on WhatsApp. The amount and phone number are never put in the link.
+        The other person gets a request right inside Dealit — no WhatsApp needed. Sharing a link is
+        only needed if they don't use Dealit yet.
       </p>
+
+      <Dialog open={!!invite} onOpenChange={(open) => !open && setInvite(null)}>
+        <DialogContent className="rounded-2xl">
+          <DialogHeader>
+            <DialogTitle>Invite {invite?.name} to Dealit</DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-muted-foreground">
+            {invite?.name} isn't on Dealit yet, so the request is waiting for them. They can confirm
+            it here once they join — or share the secure link so they can open it right away. The
+            amount and phone number are never put in the link.
+          </p>
+          <DialogFooter className="gap-2">
+            <Button
+              variant="outline"
+              className="h-12 w-full rounded-xl"
+              onClick={() => {
+                if (!invite) return;
+                const text = whatsappMessage(
+                  profile?.full_name ?? "Someone",
+                  invite.amount,
+                  invite.link,
+                );
+                window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank", "noopener");
+              }}
+            >
+              <Share2 className="mr-2 h-4 w-4" /> Share on WhatsApp (optional)
+            </Button>
+            <Button
+              className="h-12 w-full rounded-xl"
+              onClick={() => {
+                setInvite(null);
+                toast.success("Sent for confirmation");
+                void navigate({ to: "/requests" });
+              }}
+            >
+              Done — I'll tell them later
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </AppShell>
   );
 }

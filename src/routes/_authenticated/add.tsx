@@ -63,11 +63,17 @@ function AddPage() {
         note: note.trim() || null,
       });
 
-      const link = `${window.location.origin}/t/${created.invite_token}`;
-      const text = whatsappMessage(profile?.full_name ?? "Someone", value, link);
-      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank", "noopener");
-      toast.success("Sent for confirmation");
-      void navigate({ to: "/requests" });
+      const matched = Boolean(direction === "gave" ? created.borrower_id : created.lender_id);
+      if (matched) {
+        toast.success(`Sent — ${name.trim()} will see it in their Requests`);
+        void navigate({ to: "/requests" });
+      } else {
+        setInvite({
+          name: name.trim(),
+          amount: value,
+          link: `${window.location.origin}/t/${created.invite_token}`,
+        });
+      }
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not save this record");
     }

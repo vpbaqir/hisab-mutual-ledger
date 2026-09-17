@@ -1,12 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Inbox } from "lucide-react";
+import { Inbox, Share2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { AppShell, EmptyState } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useConfirmTransaction, useLedger, useRejectTransaction } from "@/lib/api";
-import { formatAmount, initials, statusLabel, type LedgerTransaction } from "@/lib/dealit";
+import { useMyProfile } from "@/lib/auth";
+import { formatAmount, initials, statusLabel, whatsappMessage, type LedgerTransaction } from "@/lib/dealit";
 
 export const Route = createFileRoute("/_authenticated/requests")({
   head: () => ({

@@ -22,7 +22,8 @@ import {
   useRecordReturn,
   useRejectRepayment,
 } from "@/lib/api";
-import { formatAmount, initials, type LedgerTransaction, type Repayment } from "@/lib/dealit";
+import { useMyProfile } from "@/lib/auth";
+import { formatAmount, initials, whatsappMessage, type LedgerTransaction, type Repayment } from "@/lib/dealit";
 
 export const Route = createFileRoute("/_authenticated/transactions/$id")({
   head: () => ({
@@ -48,6 +49,15 @@ function TransactionPage() {
   const confirmRepayment = useConfirmRepayment();
   const rejectRepayment = useRejectRepayment();
   const confirmTransaction = useConfirmTransaction();
+  const { data: profile } = useMyProfile();
+  const myId = data?.userId;
+
+  function remind() {
+    if (!item) return;
+    const link = `${window.location.origin}/t/${item.tx.invite_token}`;
+    const text = whatsappMessage(profile?.full_name ?? "Someone", Number(item.tx.amount), link);
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank", "noopener");
+  }
 
   if (!item) {
     return (

@@ -137,6 +137,12 @@ function TransactionPage() {
         ) : null}
       </div>
 
+      {item.tx.status === "pending" && item.tx.creator_id === myId ? (
+        <Button variant="outline" className="mt-4 h-11 w-full rounded-xl text-sm" onClick={remind}>
+          <Share2 className="mr-2 h-4 w-4" /> Remind on WhatsApp (optional)
+        </Button>
+      ) : null}
+
       <div className="card-surface mt-4 p-4">
         <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Timeline</p>
         <div className="mt-3 space-y-4">

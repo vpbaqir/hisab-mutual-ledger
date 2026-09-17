@@ -8,6 +8,13 @@
       "when": 1789370743728,
       "tag": "0000_create_dealit_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789606817485,
+      "tag": "0001_add_lookup_profile_by_phone",
+      "breakpoints": true
     }
   ]
 }

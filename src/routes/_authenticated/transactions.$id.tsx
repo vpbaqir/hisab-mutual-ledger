@@ -1,6 +1,6 @@
 import { createFileRoute, useParams } from "@tanstack/react-router";
 import { useState } from "react";
-import { Check, CircleDot, HandCoins } from "lucide-react";
+import { Check, CircleDot, HandCoins, Share2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { AppShell } from "@/components/AppShell";
@@ -22,7 +22,8 @@ import {
   useRecordReturn,
   useRejectRepayment,
 } from "@/lib/api";
-import { formatAmount, initials, type LedgerTransaction, type Repayment } from "@/lib/dealit";
+import { useMyProfile } from "@/lib/auth";
+import { formatAmount, initials, whatsappMessage, type LedgerTransaction, type Repayment } from "@/lib/dealit";
 
 export const Route = createFileRoute("/_authenticated/transactions/$id")({
   head: () => ({
@@ -48,6 +49,15 @@ function TransactionPage() {
   const confirmRepayment = useConfirmRepayment();
   const rejectRepayment = useRejectRepayment();
   const confirmTransaction = useConfirmTransaction();
+  const { data: profile } = useMyProfile();
+  const myId = data?.userId;
+
+  function remind() {
+    if (!item) return;
+    const link = `${window.location.origin}/t/${item.tx.invite_token}`;
+    const text = whatsappMessage(profile?.full_name ?? "Someone", Number(item.tx.amount), link);
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank", "noopener");
+  }
 
   if (!item) {
     return (
@@ -126,6 +136,12 @@ function TransactionPage() {
           </Button>
         ) : null}
       </div>
+
+      {item.tx.status === "pending" && item.tx.creator_id === myId ? (
+        <Button variant="outline" className="mt-4 h-11 w-full rounded-xl text-sm" onClick={remind}>
+          <Share2 className="mr-2 h-4 w-4" /> Remind on WhatsApp (optional)
+        </Button>
+      ) : null}
 
       <div className="card-surface mt-4 p-4">
         <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Timeline</p>

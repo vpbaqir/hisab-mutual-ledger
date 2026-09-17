@@ -114,12 +114,8 @@ export function useCreateTransaction() {
       if (!user) throw new Error("Not signed in");
 
       const phone = normalizePhone(input.phone);
-      const { data: match } = await supabase
-        .from("profiles")
-        .select("id")
-        .eq("phone", phone)
-        .maybeSingle();
-      const otherId = match?.id ?? null;
+      const { data: match } = await supabase.rpc("lookup_profile_by_phone", { _phone: phone });
+      const otherId = match?.[0]?.id ?? null;
 
       const { data, error } = await supabase
         .from("transactions")

@@ -70,6 +70,13 @@ function RequestsPage() {
 function RequestCard({ item, actionable }: { item: LedgerTransaction; actionable?: boolean }) {
   const confirm = useConfirmTransaction();
   const reject = useRejectTransaction();
+  const { data: profile } = useMyProfile();
+
+  function remind() {
+    const link = `${window.location.origin}/t/${item.tx.invite_token}`;
+    const text = whatsappMessage(profile?.full_name ?? "Someone", Number(item.tx.amount), link);
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank", "noopener");
+  }
 
   return (
     <div className="card-surface p-4">
@@ -125,7 +132,13 @@ function RequestCard({ item, actionable }: { item: LedgerTransaction; actionable
             Reject
           </Button>
         </div>
-      ) : null}
+      ) : (
+        <div className="mt-4">
+          <Button variant="outline" className="h-10 w-full rounded-xl text-sm" onClick={remind}>
+            <Share2 className="mr-2 h-4 w-4" /> Remind on WhatsApp (optional)
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

@@ -219,6 +219,13 @@ export type Database = {
     Functions: {
       can_access_transaction: { Args: { _tx: string }; Returns: boolean }
       current_phone: { Args: never; Returns: string }
+      lookup_profile_by_phone: {
+        Args: { _phone: string }
+        Returns: {
+          full_name: string
+          id: string
+        }[]
+      }
       shares_transaction: { Args: { _other: string }; Returns: boolean }
     }
     Enums: {
